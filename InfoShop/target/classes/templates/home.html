@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Início - InfoShop</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+    <main>
+        <h1>Olá, <span th:text="${nome}"></span></h1>
+
+        <ul>
+            <li th:if="${ehAdmin}"><a th:href="@{/admin/painel}">Painel do administrador</a></li>
+        </ul>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Sair</button>
+        </form>
+    </main>
+</body>
+</html>

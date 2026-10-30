@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro - InfoShop</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+    <main>
+        <h1>Criar conta</h1>
+
+        <form th:action="@{/registro}" th:object="${registroForm}" method="post">
+            <label for="nome">Nome</label>
+            <input id="nome" type="text" th:field="*{nome}">
+            <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+
+            <label for="email">Email</label>
+            <input id="email" type="email" th:field="*{email}">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+
+            <label for="telefone">Telefone (só números, com DDD)</label>
+            <input id="telefone" type="text" th:field="*{telefone}">
+            <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></span>
+
+            <label for="senha">Senha</label>
+            <input id="senha" type="password" th:field="*{senha}">
+            <span th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <a th:href="@{/login}">Já tenho conta</a>
+    </main>
+</body>
+</html>
