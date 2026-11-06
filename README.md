@@ -28,30 +28,61 @@ InfoShop/
 │   │   ├── controller/
 │   │   │   ├── AdminController.java  # Área administrativa (/admin/**)
 │   │   │   ├── AuthController.java   # Login e registro
-│   │   │   └── HomeController.java   # Página inicial (/home)
+│   │   │   ├── CarrinhoController.java # Gerenciamento do carrinho de compras
+│   │   │   ├── HomeController.java   # Página inicial (/home)
+│   │   │   └── ProdutoController.java  # Gerenciamento de produtos
 │   │   ├── dto/
-│   │   │   └── RegistroForm.java     # Validações do formulário de cadastro
+│   │   │   ├── BarraDia.java
+│   │   │   ├── DashboardView.java
+│   │   │   ├── ItemCarrinhoView.java
+│   │   │   ├── ProdutoMaisVendido.java
+│   │   │   ├── RegistroForm.java     # Validações do formulário de cadastro
+│   │   │   └── VendasPorDia.java
 │   │   ├── model/
 │   │   │   ├── Perfil.java           # Enum: ADMIN, USER
 │   │   │   ├── PerfilConverter.java
-│   │   │   └── Usuario.java
+│   │   │   ├── Produto.java
+│   │   │   ├── Usuario.java
+│   │   │   ├── Venda.java
+│   │   │   ├── VendaProduto.java
+│   │   │   └── VendaProdutoId.java
 │   │   ├── repository/
-│   │   │   └── UsuarioRepository.java
+│   │   │   ├── ProdutoRepository.java
+│   │   │   ├── UsuarioRepository.java
+│   │   │   ├── VendaProdutoRepository.java
+│   │   │   └── VendaRepository.java
 │   │   └── service/
-│   │       ├── CadastroService.java       # Regras de cadastro (checa e-mail duplicado)
-│   │       └── UsuarioDetailsService.java  # Integração com Spring Security
+│   │       ├── CadastroService.java       # Regras de cadastro 
+│   │       ├── Carrinho.java
+│   │       ├── DashboardService.java
+│   │       ├── UsuarioDetailsService.java # Integração com Spring Security
+│   │       └── VendaService.java
 │   ├── src/main/resources/
+│   │   ├── static/
+│   │   │   ├── assets/
+│   │   │   │   ├── fundo-cadastro.png
+│   │   │   │   └── fundo-login.png
+│   │   │   ├── css/
+│   │   │   │   ├── admin.css
+│   │   │   │   ├── cadastro.css
+│   │   │   │   ├── carrinho.css
+│   │   │   │   ├── home.css
+│   │   │   │   ├── login.css
+│   │   │   │   └── produto.css
+│   │   │   └── js/
+│   │   │       └── loja.js
 │   │   ├── templates/
-│   │   │   ├── admin/panel.html
+│   │   │   ├── admin/
+│   │   │   ├── carrinho.html
 │   │   │   ├── home.html
 │   │   │   ├── login.html
+│   │   │   ├── produto.html
 │   │   │   └── registro.html
-│   │   ├── static/index.html
 │   │   └── application.properties
 │   ├── pom.xml
 │   ├── mvnw / mvnw.cmd
 │   └── HELP.md
-└── criar_e_popular_o_banco.sql       # Script de criação e carga inicial do banco
+└── criar_e_popular_o_banco.sql         # Script de criação e carga inicial do banco
 ```
 
 ## ✅ Pré-requisitos
@@ -66,10 +97,6 @@ O banco usado é o **MySQL**, com o schema `jr_loja`.
 
 1. Rode o script `criar_e_popular_o_banco.sql` para criar o banco, as tabelas (`usuario`, `produtos`, `venda`, `venda_produto`) e inserir alguns dados de exemplo:
 
-```bash
-mysql -u root -p < criar_e_popular_o_banco.sql
-```
-
 2. Confira a conexão em `InfoShop/src/main/resources/application.properties`:
 
 ```properties
@@ -79,8 +106,6 @@ spring.datasource.password=root
 ```
 
 Ajuste usuário/senha/host conforme o seu ambiente.
-
-> ⚠️ **Atenção:** o script do banco grava as senhas de teste (`admin`, `jose123`, `marcos123`) em texto puro. A aplicação, porém, espera senhas com hash **BCrypt** (usadas pelo Spring Security). Isso significa que os usuários do script SQL **não conseguem logar** direto — veja a seção "Usuário de acesso" abaixo para o login que realmente funciona.
 
 ## ▶️ Como executar o projeto
 
@@ -128,6 +153,8 @@ Use esse login para entrar como **ADMIN**. Para testar como usuário comum, cada
 |---|---|---|
 | `/` | público | Redireciona para `/home` |
 | `/login` | público | Tela de login |
+| `/carrinho`| autenticado | Carrinho de compras|
+| `/produto/{id do produto}`| autenticado | página do produto|
 | `/registro` | público | Cadastro de novo usuário |
 | `/home` | autenticado | Página inicial (mostra nome do usuário e se é admin) |
 | `/admin/painel` | perfil ADMIN | Painel administrativo |
@@ -136,5 +163,6 @@ Use esse login para entrar como **ADMIN**. Para testar como usuário comum, cada
 
 ## 📌 Observações
 
-- Não há `.gitignore` no projeto — a pasta `target/` (arquivos compilados) está sendo versionada. Recomenda-se criar um `.gitignore` com `target/` para evitar conflitos de merge e reduzir o tamanho do repositório.
+- O Painel do perfil ADM está com bugs, irei arrumar posteriormente
 - O `pom.xml` inclui o banco H2 em memória como dependência, mas a aplicação está configurada para usar MySQL (`application.properties`). O H2 fica disponível caso queira trocar o ambiente de testes.
+- Tenho interesse em criar uma função de criar produtos e estoque no painel admin.
