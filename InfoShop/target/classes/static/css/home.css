@@ -1,0 +1,597 @@
+:root {
+    --fundo: #14101d;
+    --topo: #0f0b17;
+    --superficie: #1c1727;
+    --campo-fundo: #26222f;
+    --borda: rgba(255, 255, 255, 0.1);
+    --texto: #ffffff;
+    --texto-suave: #b9b4c6;
+    --destaque: #a78bea;
+    --destaque-hover: #b9a1f2;
+    --preco: #d2c1ff;
+    --foto-fundo: #f4f2f8;
+    --erro: #ff8a9b;
+    --sucesso: #8be0b0;
+    --fonte: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    font-family: var(--fonte);
+    color: var(--texto);
+    background: var(--fundo);
+    line-height: 1.5;
+}
+
+a {
+    color: inherit;
+}
+
+.largura {
+    width: 100%;
+    max-width: 75rem;
+    margin-inline: auto;
+    padding-inline: max(1rem, env(safe-area-inset-left)) max(1rem, env(safe-area-inset-right));
+}
+
+.so-leitor {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+:focus-visible {
+    outline: 2px solid var(--destaque);
+    outline-offset: 2px;
+}
+
+/* ---------- Topo: marca, busca e carrinho ---------- */
+.topo {
+    background: var(--topo);
+}
+
+.topo-barra {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 0.9rem;
+}
+
+.marca {
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+.marca b {
+    color: var(--destaque);
+}
+
+.busca {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    background: var(--campo-fundo);
+    border: 1px solid var(--borda);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.busca:focus-within {
+    border-color: var(--destaque);
+}
+
+.busca input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.65rem 1rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--texto);
+    background: transparent;
+    border: 0;
+    outline: 0;
+}
+
+.busca input::placeholder {
+    color: var(--texto-suave);
+    opacity: 1;
+}
+
+.busca button {
+    padding: 0 1rem;
+    color: var(--texto);
+    background: transparent;
+    border: 0;
+    border-left: 1px solid var(--borda);
+    cursor: pointer;
+}
+
+.busca button:hover {
+    color: var(--destaque-hover);
+}
+
+.carrinho {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    color: var(--topo);
+    background: var(--destaque);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.carrinho:hover {
+    background: var(--destaque-hover);
+}
+
+.selo {
+    min-width: 1.5rem;
+    padding: 0 0.4rem;
+    font-size: 0.8rem;
+    text-align: center;
+    color: var(--texto);
+    background: var(--topo);
+    border-radius: 999px;
+}
+
+/* ---------- Menu ---------- */
+.menu {
+    background: var(--superficie);
+    border-block: 1px solid var(--borda);
+}
+
+.menu-lista {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    overflow-x: auto;
+}
+
+.menu a,
+.menu-sair button {
+    display: block;
+    padding: 0.85rem 0.9rem;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--texto);
+    background: transparent;
+    border: 0;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.menu a:hover,
+.menu-sair button:hover {
+    color: var(--destaque-hover);
+}
+
+.menu a.ativo {
+    color: var(--destaque);
+    box-shadow: inset 0 -3px 0 var(--destaque);
+}
+
+.menu-espaco {
+    flex: 1;
+}
+
+.menu-usuario {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    white-space: nowrap;
+}
+
+.menu-usuario strong {
+    color: var(--texto);
+}
+
+.menu-sair {
+    margin: 0;
+}
+
+/* ---------- Trilha ---------- */
+.trilha {
+    padding-block: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    background: var(--topo);
+}
+
+/* ---------- Corpo: lateral + produtos ---------- */
+.corpo {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: 2rem 3rem;
+    align-items: start;
+}
+
+.lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.bloco {
+    background: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.bloco h2 {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #5b3fb0, #3b2680);
+}
+
+.bloco-corpo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 1rem;
+    border: 0;
+    font-size: 0.9rem;
+}
+
+.bloco-corpo label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.bloco-corpo input[type="radio"] {
+    accent-color: var(--destaque);
+}
+
+.bloco-titulo {
+    margin: 0;
+    font-weight: 600;
+}
+
+.faixa {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.faixa input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.5rem 0.6rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--texto);
+    background: var(--campo-fundo);
+    border: 1px solid var(--borda);
+    border-radius: 0.4rem;
+}
+
+.botao-claro {
+    padding: 0.55rem 1rem;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--texto);
+    background: transparent;
+    border: 1px solid var(--borda);
+    border-radius: 0.4rem;
+    cursor: pointer;
+}
+
+.botao-claro:hover {
+    border-color: var(--destaque);
+    color: var(--destaque-hover);
+}
+
+/* ---------- Principal ---------- */
+.mensagem {
+    margin: 0 0 1.25rem;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: var(--superficie);
+    border: 1px solid currentColor;
+    border-radius: 0.5rem;
+}
+
+.mensagem.sucesso {
+    color: var(--sucesso);
+}
+
+.mensagem.erro {
+    color: var(--erro);
+}
+
+.titulo {
+    margin: 0 0 1.5rem;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.titulo::after {
+    content: "";
+    display: block;
+    width: 6rem;
+    height: 3px;
+    margin: 0.75rem auto 0;
+    background: var(--destaque);
+}
+
+.faixa-saldo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, #2a1f47, #1c1727);
+    border: 1px solid rgba(167, 139, 234, 0.35);
+    border-radius: 0.75rem;
+}
+
+.faixa-saldo p {
+    margin: 0;
+}
+
+.faixa-rotulo {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+}
+
+.faixa-valor {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.botao-destaque {
+    padding: 0.6rem 1.25rem;
+    font-weight: 600;
+    color: var(--topo);
+    background: var(--destaque);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.botao-destaque:hover {
+    background: var(--destaque-hover);
+}
+
+.contagem {
+    margin: 1.5rem 0 1rem;
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+}
+
+/* ---------- Grade de produtos ---------- */
+.produtos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: 1.25rem;
+}
+
+.produto {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: 0.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.produto:hover {
+    border-color: rgba(167, 139, 234, 0.6);
+    transform: translateY(-2px);
+}
+
+.produto-foto {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 1;
+    padding: 0.75rem;
+    background: var(--foto-fundo);
+    border-radius: 0.5rem;
+}
+
+.produto-foto img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.produto-nome {
+    margin: 1rem 0 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.produto-desc {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.produto-preco {
+    margin: auto 0 0;
+    padding-top: 0.75rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--preco);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.produto-parcela {
+    margin: 0 0 0.9rem;
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.produto form {
+    margin: 0;
+}
+
+.botao-adicionar {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--topo);
+    background: var(--destaque);
+    border: 0;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.botao-adicionar:hover {
+    background: var(--destaque-hover);
+}
+
+.vazio {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--texto-suave);
+}
+
+.rodape {
+    padding-block: 1.5rem;
+    font-size: 0.85rem;
+    text-align: center;
+    color: var(--texto-suave);
+    background: var(--topo);
+}
+
+.produto-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.produto-link:hover .produto-nome {
+    color: var(--destaque-hover);
+}
+
+
+/* ---------- Tablet deitado ---------- */
+@media (max-width: 64rem) {
+    .corpo {
+        grid-template-columns: 13rem minmax(0, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* ---------- Tablet em pé e celular: filtros passam para cima da grade ---------- */
+@media (max-width: 52rem) {
+    .topo-barra {
+        flex-wrap: wrap;
+    }
+
+    .busca {
+        order: 3;
+        flex: 1 1 100%;
+    }
+
+    .carrinho {
+        margin-left: auto;
+    }
+
+    .corpo {
+        grid-template-columns: 1fr;
+        padding-block: 1.5rem 2.5rem;
+    }
+
+    .lateral {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .bloco {
+        flex: 1 1 14rem;
+    }
+    
+    
+}
+
+/* ---------- Celular: duas colunas de produtos ---------- */
+@media (max-width: 30rem) {
+    .produtos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .produto {
+        padding: 0.7rem;
+    }
+
+    .produto-nome {
+        font-size: 0.9rem;
+    }
+
+    .produto-preco {
+        font-size: 1.15rem;
+    }
+
+    .produto-desc {
+        display: none;
+    }
+
+    .menu-usuario {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .produto,
+    .carrinho,
+    .botao-adicionar,
+    .botao-destaque {
+        transition: none;
+    }
+
+    .produto:hover {
+        transform: none;
+    }
+}

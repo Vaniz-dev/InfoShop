@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Carrinho - InfoShop</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/carrinho.css}">
+</head>
+<body>
+
+    <header class="topo">
+        <div class="largura topo-barra">
+            <a class="marca" th:href="@{/home}">Info<b>Shop</b></a>
+            <span class="topo-espaco"></span>
+            <a class="carrinho" th:href="@{/carrinho}">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/>
+                    <path d="M2 3h3l2.7 12.4a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 7H6"/>
+                </svg>
+                Carrinho <span class="selo" th:text="${qtdCarrinho}">0</span>
+            </a>
+        </div>
+
+        <nav class="menu" aria-label="Principal">
+            <div class="largura menu-lista">
+                <a th:href="@{/home}">Home</a>
+                <a class="ativo" th:href="@{/carrinho}" aria-current="page">Meu carrinho</a>
+                <a th:if="${ehAdmin}" th:href="@{/admin/painel}">Painel admin</a>
+
+                <span class="menu-espaco"></span>
+
+                <span class="menu-usuario">Olá, <strong th:text="${nome}"></strong></span>
+                <form class="menu-sair" th:action="@{/logout}" method="post">
+                    <button type="submit">Sair</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="trilha">
+        <div class="largura">› <a th:href="@{/home}">Home</a> <span aria-hidden="true">/</span> Carrinho</div>
+    </div>
+
+    <main class="largura cesta">
+        <p class="mensagem erro" role="alert" th:if="${erro}" th:text="${erro}"></p>
+        <p class="mensagem sucesso" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
+
+        <h1 class="titulo">Meu carrinho</h1>
+
+        <!-- Carrinho vazio -->
+        <section class="cesta-vazio" th:if="${#lists.isEmpty(itens)}">
+            <p>Seu carrinho está vazio.</p>
+            <a class="botao-destaque" th:href="@{/home}">Ver produtos</a>
+        </section>
+
+        <!-- Carrinho com itens -->
+        <div class="cesta-corpo" th:unless="${#lists.isEmpty(itens)}">
+
+            <section aria-label="Produtos no carrinho">
+                <ul class="cesta-lista">
+                    <li class="cesta-item" th:each="item : ${itens}">
+
+                        <div class="cesta-foto">
+                            <img th:src="${item.produto.caminhoImagem}" th:alt="${item.produto.nome}" loading="lazy">
+                        </div>
+
+                        <div class="cesta-info">
+                            <h2 th:text="${item.produto.nome}"></h2>
+                            <p class="cesta-unit">
+                                R$ <span th:text="${#numbers.formatDecimal(item.produto.valor, 1, 'POINT', 2, 'COMMA')}"></span> cada
+                            </p>
+                        </div>
+
+                        <div class="quantidade" role="group" aria-label="Quantidade">
+                            <form th:action="@{/carrinho/menos/{id}(id=${item.produto.id})}" method="post">
+                                <button type="submit" aria-label="Diminuir quantidade">−</button>
+                            </form>
+                            <span th:text="${item.quantidade}" aria-live="polite">1</span>
+                            <form th:action="@{/carrinho/mais/{id}(id=${item.produto.id})}" method="post">
+                                <button type="submit" aria-label="Aumentar quantidade">+</button>
+                            </form>
+                        </div>
+
+                        <p class="cesta-subtotal">
+                            R$ <span th:text="${#numbers.formatDecimal(item.subtotal, 1, 'POINT', 2, 'COMMA')}"></span>
+                        </p>
+
+                        <form class="cesta-remover" th:action="@{/carrinho/remover/{id}(id=${item.produto.id})}" method="post">
+                            <button type="submit" th:attr="aria-label=${'Remover ' + item.produto.nome}">Remover</button>
+                        </form>
+                    </li>
+                </ul>
+
+                <form class="cesta-limpar" th:action="@{/carrinho/limpar}" method="post">
+                    <button type="submit" class="botao-claro">Esvaziar carrinho</button>
+                </form>
+            </section>
+
+            <aside class="resumo" aria-labelledby="resumo-titulo">
+                <h2 id="resumo-titulo">Resumo do pedido</h2>
+
+                <dl>
+                    <div>
+                        <dt>Itens</dt>
+                        <dd th:text="${qtdCarrinho}">0</dd>
+                    </div>
+                    <div class="resumo-total">
+                        <dt>Total</dt>
+                        <dd>R$ <span th:text="${#numbers.formatDecimal(total, 1, 'POINT', 2, 'COMMA')}"></span></dd>
+                    </div>
+                    <div>
+                        <dt>Seu saldo</dt>
+                        <dd>R$ <span th:text="${#numbers.formatDecimal(saldo, 1, 'POINT', 2, 'COMMA')}"></span></dd>
+                    </div>
+                    <div>
+                        <dt>Saldo após a compra</dt>
+                        <dd th:classappend="${!saldoSuficiente} ? 'negativo'">
+                            R$ <span th:text="${#numbers.formatDecimal(saldoApos, 1, 'POINT', 2, 'COMMA')}"></span>
+                        </dd>
+                    </div>
+                </dl>
+
+                <p class="aviso" role="alert" th:unless="${saldoSuficiente}">
+                    Saldo insuficiente para esta compra. Remova alguns itens para continuar.
+                </p>
+
+                <form th:action="@{/carrinho/finalizar}" method="post">
+                    <button type="submit" class="botao-finalizar" th:disabled="${!saldoSuficiente}">
+                        Finalizar compra
+                    </button>
+                </form>
+
+                <a class="continuar" th:href="@{/home}">Continuar comprando</a>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="rodape">
+        <div class="largura">InfoShop</div>
+    </footer>
+
+</body>
+</html>

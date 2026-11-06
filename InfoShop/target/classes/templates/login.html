@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - InfoShop</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+    <div class="pagina">
+        <main class="painel">
+            <h1>Página de Login</h1>
+
+            <p class="cadastro">
+                Não tem uma conta? <a th:href="@{/registro}">Cadastro</a>
+            </p>
+
+            <p class="mensagem erro" role="alert" th:if="${param.error}">Email ou senha inválidos.</p>
+            <p class="mensagem sucesso" role="status" th:if="${param.registrado}">Cadastro feito. Faça login.</p>
+            <p class="mensagem sucesso" role="status" th:if="${param.logout}">Você saiu do sistema.</p>
+
+            <form class="formulario" th:action="@{/login}" method="post">
+                <div class="campo">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email"
+                           autocomplete="email" required autofocus>
+                </div>
+
+                <div class="campo">
+                    <label for="password">Senha</label>
+                    <input id="password" name="password" type="password"
+                           autocomplete="current-password" required>
+                </div>
+
+                <button type="submit" class="botao">Logar</button>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

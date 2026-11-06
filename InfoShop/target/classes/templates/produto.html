@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${produto.nome} + ' - InfoShop'">Produto - InfoShop</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/produto.css}">
+</head>
+<body>
+
+    <header class="topo">
+        <div class="largura topo-barra">
+            <a class="marca" th:href="@{/home}">Info<b>Shop</b></a>
+            <span class="topo-espaco"></span>
+            <a class="carrinho" th:href="@{/carrinho}">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/>
+                    <path d="M2 3h3l2.7 12.4a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 7H6"/>
+                </svg>
+                Carrinho <span class="selo" th:text="${qtdCarrinho}">0</span>
+            </a>
+        </div>
+
+        <nav class="menu" aria-label="Principal">
+            <div class="largura menu-lista">
+                <a th:href="@{/home}">Home</a>
+                <a th:href="@{/carrinho}">Meu carrinho</a>
+                <a th:if="${ehAdmin}" th:href="@{/admin/painel}">Painel admin</a>
+
+                <span class="menu-espaco"></span>
+
+                <span class="menu-usuario">Olá, <strong th:text="${nome}"></strong></span>
+                <form class="menu-sair" th:action="@{/logout}" method="post">
+                    <button type="submit">Sair</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <div class="trilha">
+        <div class="largura">
+            › <a th:href="@{/home}">Home</a> <span aria-hidden="true">/</span>
+            <span th:text="${produto.nome}"></span>
+        </div>
+    </div>
+
+    <main class="largura detalhe">
+        <p class="mensagem sucesso" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
+        <p class="mensagem erro" role="alert" th:if="${erro}" th:text="${erro}"></p>
+
+        <div class="detalhe-corpo">
+            <div class="detalhe-foto">
+                <img th:src="${produto.caminhoImagem}" th:alt="${produto.nome}">
+            </div>
+
+            <section class="detalhe-info">
+                <h1 th:text="${produto.nome}"></h1>
+
+                <p class="detalhe-preco">
+                    R$ <span th:text="${#numbers.formatDecimal(produto.valor, 1, 'POINT', 2, 'COMMA')}"></span>
+                </p>
+                <p class="detalhe-parcela">
+                    ou 10x de R$ <span th:text="${#numbers.formatDecimal(produto.valor / 10, 1, 'POINT', 2, 'COMMA')}"></span>
+                </p>
+
+                <h2 class="detalhe-subtitulo">Descrição</h2>
+                <p class="detalhe-desc" th:text="${produto.descricao}"></p>
+
+                <form th:action="@{/carrinho/adicionar/{id}(id=${produto.id})}" method="post">
+                    <input type="hidden" name="voltar" value="true">
+                    <button type="submit" class="botao-adicionar botao-grande">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/>
+                            <path d="M2 3h3l2.7 12.4a1 1 0 0 0 1 .8h9.2a1 1 0 0 0 1-.8L21 7H6"/>
+                        </svg>
+                        Adicionar ao carrinho
+                    </button>
+                </form>
+
+                <a class="voltar" th:href="@{/home}">← Voltar aos produtos</a>
+            </section>
+        </div>
+    </main>
+
+    <footer class="rodape">
+        <div class="largura">InfoShop</div>
+    </footer>
+
+</body>
+</html>

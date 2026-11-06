@@ -1,0 +1,339 @@
+.topo-espaco {
+    flex: 1;
+}
+
+.etiqueta-admin {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--topo);
+    background: var(--destaque);
+    border-radius: 999px;
+}
+
+.admin {
+    padding-block: 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.admin-titulo {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+}
+
+.admin-sub {
+    margin: -1rem 0 0;
+    color: var(--texto-suave);
+}
+
+.aviso-vazio {
+    margin: 0;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.95rem;
+    color: var(--texto-suave);
+    background: var(--superficie);
+    border: 1px dashed var(--borda);
+    border-radius: 0.75rem;
+}
+
+/* ---------- Indicadores ---------- */
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1rem;
+}
+
+.kpi {
+    padding: 1.1rem 1.25rem;
+    background: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: 0.75rem;
+}
+
+.kpi p {
+    margin: 0;
+}
+
+.kpi-rotulo {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+}
+
+.kpi-valor {
+    margin-top: 0.35rem !important;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.kpi-destaque {
+    color: var(--preco);
+}
+
+/* ---------- Blocos ---------- */
+.duas-colunas {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.bloco-admin {
+    padding: 1.25rem;
+    background: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: 0.75rem;
+    min-width: 0;
+}
+
+.bloco-admin h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.bloco-admin-sub {
+    margin: 0.2rem 0 1rem;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+}
+
+.vazio-admin {
+    margin: 1rem 0 0;
+    color: var(--texto-suave);
+}
+
+/* ---------- Gráfico de barras ---------- */
+.grafico {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.5rem;
+    height: 16rem;
+}
+
+.coluna {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.coluna-valor {
+    font-size: 0.7rem;
+    color: var(--texto-suave);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.coluna-trilho {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    background: var(--campo-fundo);
+    border-radius: 0.4rem;
+    overflow: hidden;
+}
+
+.coluna-barra {
+    position: absolute;
+    inset: auto 0 0 0;
+    background: linear-gradient(to top, #5b3fb0, var(--destaque));
+    border-radius: 0.4rem 0.4rem 0 0;
+}
+
+.coluna-dia {
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+}
+
+/* ---------- Ranking de produtos ---------- */
+.ranking {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ranking-linha {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.ranking-nome {
+    min-width: 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.ranking-qtd {
+    color: var(--texto-suave);
+    white-space: nowrap;
+}
+
+.ranking-trilho {
+    height: 0.5rem;
+    margin-top: 0.4rem;
+    background: var(--campo-fundo);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.ranking-barra {
+    height: 100%;
+    background: var(--destaque);
+    border-radius: 999px;
+}
+
+.ranking-receita {
+    margin: 0.3rem 0 0;
+    font-size: 0.8rem;
+    color: var(--preco);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Tabela ---------- */
+.tabela-rolagem {
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.tabela th,
+.tabela td {
+    padding: 0.7rem 0.75rem;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--borda);
+}
+
+.tabela th {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
+
+.tabela .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.tabela tbody tr:hover {
+    background: rgba(167, 139, 234, 0.08);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 52rem) {
+    .admin {
+        padding-block: 1.5rem 2.5rem;
+    }
+
+    .duas-colunas {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 30rem) {
+    .kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .kpi {
+        padding: 0.9rem;
+    }
+
+    .kpi-valor {
+        font-size: 1.25rem;
+    }
+
+    .grafico {
+        height: 13rem;
+        gap: 0.3rem;
+    }
+
+    .coluna-valor {
+        font-size: 0.6rem;
+    }
+
+    .bloco-admin {
+        padding: 1rem;
+    }
+
+        /* ---------- Filtro de período ---------- */
+    .filtro {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .filtro-rotulo {
+        margin-right: 0.25rem;
+        font-size: 0.85rem;
+        color: var(--texto-suave);
+    }
+
+    .filtro a {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--texto);
+        background: var(--superficie);
+        border: 1px solid var(--borda);
+        border-radius: 999px;
+        text-decoration: none;
+        transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .filtro a:hover {
+        border-color: var(--destaque);
+    }
+
+    .filtro a.ativo {
+        color: var(--topo);
+        background: var(--destaque);
+        border-color: var(--destaque);
+    }
+
+    /* ---------- Gráfico com muitos dias (período de 30 dias) ---------- */
+    .grafico.denso {
+        gap: 0.2rem;
+    }
+
+    .grafico.denso .coluna-valor {
+        display: none;
+    }
+
+    .coluna-dia.oculto {
+        visibility: hidden;
+    }
+
+    .coluna-dia {
+        white-space: nowrap;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .filtro a {
+            transition: none;
+        }
+    }
+}

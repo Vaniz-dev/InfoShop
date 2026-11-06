@@ -1,0 +1,112 @@
+.topo-espaco {
+    flex: 1;
+}
+
+.trilha a {
+    text-decoration: none;
+}
+
+.trilha a:hover {
+    color: var(--destaque-hover);
+}
+
+.detalhe {
+    padding-block: 2rem 3rem;
+}
+
+.detalhe-corpo {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+}
+
+.detalhe-foto {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 1;
+    padding: 1.5rem;
+    background: var(--foto-fundo);
+    border-radius: 0.75rem;
+}
+
+.detalhe-foto img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.detalhe-info h1 {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.2;
+    text-wrap: balance;
+}
+
+.detalhe-preco {
+    margin: 1.25rem 0 0;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--preco);
+    font-variant-numeric: tabular-nums;
+}
+
+.detalhe-parcela {
+    margin: 0.25rem 0 0;
+    color: var(--texto-suave);
+    font-variant-numeric: tabular-nums;
+}
+
+.detalhe-subtitulo {
+    margin: 2rem 0 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--borda);
+}
+
+.detalhe-desc {
+    margin: 0 0 2rem;
+    max-width: 65ch;
+    line-height: 1.7;
+    color: var(--texto-suave);
+    white-space: pre-line;
+}
+
+.detalhe-info form {
+    margin: 0;
+}
+
+.botao-grande {
+    padding: 0.9rem 1.5rem;
+    font-size: 1.05rem;
+}
+
+.voltar {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+    color: var(--destaque-hover);
+}
+
+.voltar:hover {
+    color: var(--texto);
+}
+
+@media (max-width: 52rem) {
+    .detalhe {
+        padding-block: 1.5rem 2.5rem;
+    }
+
+    .detalhe-corpo {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .detalhe-foto {
+        max-width: 28rem;
+        margin-inline: auto;
+        width: 100%;
+    }
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro - InfoShop</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/cadastro.css}">
+</head>
+<body>
+    <div class="pagina">
+        <div class="arte" aria-hidden="true"></div>
+
+        <main class="painel">
+            <div class="cartao">
+                <h1>Página de Cadastro</h1>
+
+                <p class="login-link">
+                    Já tem uma conta? <a th:href="@{/login}">Login</a>
+                </p>
+
+                <form class="formulario" th:action="@{/registro}" th:object="${registroForm}" method="post">
+
+                    <div class="campo">
+                        <label for="nome">Nome</label>
+                        <input id="nome" type="text" th:field="*{nome}"
+                               placeholder="Seu nome completo"
+                               autocomplete="name" maxlength="75" required autofocus>
+                        <span class="erro-campo" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label for="email">Email</label>
+                        <input id="email" type="email" th:field="*{email}"
+                               placeholder="voce@email.com"
+                               autocomplete="email" maxlength="150" required>
+                        <span class="erro-campo" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label for="telefone">Telefone</label>
+                        <input id="telefone" type="tel" th:field="*{telefone}"
+                               placeholder="11999999999 (DDD + número)"
+                               inputmode="numeric" autocomplete="tel-national"
+                               maxlength="11" pattern="\d{11}"
+                               title="Digite 11 números, sem espaços ou traços" required>
+                        <span class="erro-campo" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label for="senha">Senha</label>
+                        <input id="senha" type="password" th:field="*{senha}"
+                               placeholder="Mínimo de 6 caracteres"
+                               autocomplete="new-password" minlength="6" maxlength="60" required>
+                        <span class="erro-campo" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
+                    </div>
+
+                    <button type="submit" class="botao">Cadastrar</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
