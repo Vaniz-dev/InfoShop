@@ -163,6 +163,5 @@ Use esse login para entrar como **ADMIN**. Para testar como usuário comum, cada
 
 ## 📌 Observações
 
-- O Painel do perfil ADM está com bugs, irei arrumar posteriormente
 - O `pom.xml` inclui o banco H2 em memória como dependência, mas a aplicação está configurada para usar MySQL (`application.properties`). O H2 fica disponível caso queira trocar o ambiente de testes.
 - Tenho interesse em criar uma função de criar produtos e estoque no painel admin.
