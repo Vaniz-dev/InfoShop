@@ -30,6 +30,10 @@ public class VendaProduto {
     @Column(nullable = false)
     private Integer quantidade = 1;
 
+    public BigDecimal getSubtotal() {
+        return valorUnitario.multiply(BigDecimal.valueOf(quantidade));
+    }
+
     @Column(name = "valor_unitario", nullable = false, precision = 9, scale = 2)
     private BigDecimal valorUnitario;
 }

@@ -13,32 +13,69 @@
     border-radius: 999px;
 }
 
+/* ---------- Estrutura da página ---------- */
 .admin {
-    padding-block: 2rem 3rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    padding-block: 2rem 3rem;
+}
+
+.admin-cabecalho {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
 }
 
 .admin-titulo {
     margin: 0;
     font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 700;
+    line-height: 1.2;
 }
 
 .admin-sub {
-    margin: -1rem 0 0;
+    margin: 0.35rem 0 0;
+    font-size: 0.95rem;
     color: var(--texto-suave);
 }
 
-.aviso-vazio {
-    margin: 0;
-    padding: 0.9rem 1.1rem;
-    font-size: 0.95rem;
-    color: var(--texto-suave);
+.admin-sub strong {
+    color: var(--texto);
+}
+
+/* ---------- Seletor de período (controle segmentado) ---------- */
+.filtro {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
     background: var(--superficie);
-    border: 1px dashed var(--borda);
-    border-radius: 0.75rem;
+    border: 1px solid var(--borda);
+    border-radius: 999px;
+}
+
+.filtro a {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    color: var(--texto-suave);
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.filtro a:hover {
+    color: var(--texto);
+    background: rgba(167, 139, 234, 0.15);
+}
+
+.filtro a.ativo {
+    color: var(--topo);
+    background: var(--destaque);
 }
 
 /* ---------- Indicadores ---------- */
@@ -65,7 +102,7 @@
 }
 
 .kpi-valor {
-    margin-top: 0.35rem !important;
+    margin-top: 0.4rem !important;
     font-size: 1.6rem;
     font-weight: 700;
     line-height: 1.2;
@@ -73,8 +110,17 @@
     overflow-wrap: anywhere;
 }
 
-.kpi-destaque {
-    color: var(--preco);
+.kpi-principal {
+    background: linear-gradient(135deg, #3b2680, #231a3d);
+    border-color: rgba(167, 139, 234, 0.45);
+}
+
+.kpi-principal .kpi-rotulo {
+    color: #d7cbf7;
+}
+
+.kpi-principal .kpi-valor {
+    color: var(--texto);
 }
 
 /* ---------- Blocos ---------- */
@@ -86,11 +132,11 @@
 }
 
 .bloco-admin {
-    padding: 1.25rem;
+    min-width: 0;
+    padding: 1.25rem 1.5rem;
     background: var(--superficie);
     border: 1px solid var(--borda);
     border-radius: 0.75rem;
-    min-width: 0;
 }
 
 .bloco-admin h2 {
@@ -100,22 +146,34 @@
 }
 
 .bloco-admin-sub {
-    margin: 0.2rem 0 1rem;
+    margin: 0.2rem 0 1.25rem;
     font-size: 0.85rem;
     color: var(--texto-suave);
 }
 
 .vazio-admin {
-    margin: 1rem 0 0;
+    margin: 0;
+    padding: 1.5rem 0.5rem;
+    text-align: center;
     color: var(--texto-suave);
 }
 
 /* ---------- Gráfico de barras ---------- */
 .grafico {
     display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 0.5rem;
-    height: 16rem;
+    gap: 0.6rem;
+    height: 17rem;
+}
+
+.grafico-vazio {
+    display: grid;
+    place-items: center;
+    height: 17rem;
+    padding: 1rem;
+    text-align: center;
+    color: var(--texto-suave);
+    border: 1px dashed var(--borda);
+    border-radius: 0.5rem;
 }
 
 .coluna {
@@ -127,7 +185,8 @@
 }
 
 .coluna-valor {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 600;
     color: var(--texto-suave);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
@@ -137,9 +196,19 @@
     position: relative;
     flex: 1;
     width: 100%;
-    background: var(--campo-fundo);
-    border-radius: 0.4rem;
+    max-width: 4.5rem;
     overflow: hidden;
+    border-radius: 0.4rem;
+    /* linhas de grade a cada 25% */
+    background:
+        repeating-linear-gradient(
+            to top,
+            transparent 0,
+            transparent calc(25% - 1px),
+            rgba(255, 255, 255, 0.07) calc(25% - 1px),
+            rgba(255, 255, 255, 0.07) 25%
+        ),
+        var(--campo-fundo);
 }
 
 .coluna-barra {
@@ -147,57 +216,100 @@
     inset: auto 0 0 0;
     background: linear-gradient(to top, #5b3fb0, var(--destaque));
     border-radius: 0.4rem 0.4rem 0 0;
+    transition: filter 0.2s;
+}
+
+.coluna:hover .coluna-barra {
+    filter: brightness(1.2);
 }
 
 .coluna-dia {
     font-size: 0.75rem;
+    white-space: nowrap;
     color: var(--texto-suave);
+}
+
+/* Período longo (30 dias): barras finas, sem valores, datas a cada 5 dias */
+.grafico.denso {
+    gap: 0.2rem;
+}
+
+.grafico.denso .coluna-valor {
+    display: none;
+}
+
+.grafico.denso .coluna-trilho {
+    max-width: none;
+    border-radius: 0.25rem;
+}
+
+.grafico.denso .coluna-barra {
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.coluna-dia.oculto {
+    visibility: hidden;
 }
 
 /* ---------- Ranking de produtos ---------- */
 .ranking {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .ranking-linha {
     display: flex;
-    justify-content: space-between;
-    gap: 0.75rem;
+    align-items: baseline;
+    gap: 0.6rem;
     font-size: 0.9rem;
 }
 
+.ranking-posicao {
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: grid;
+    place-items: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--topo);
+    background: var(--destaque);
+    border-radius: 50%;
+}
+
 .ranking-nome {
+    flex: 1;
     min-width: 0;
     font-weight: 600;
     overflow-wrap: anywhere;
 }
 
 .ranking-qtd {
+    flex: none;
     color: var(--texto-suave);
     white-space: nowrap;
 }
 
 .ranking-trilho {
     height: 0.5rem;
-    margin-top: 0.4rem;
+    margin-top: 0.5rem;
+    overflow: hidden;
     background: var(--campo-fundo);
     border-radius: 999px;
-    overflow: hidden;
 }
 
 .ranking-barra {
     height: 100%;
-    background: var(--destaque);
+    background: linear-gradient(to right, #5b3fb0, var(--destaque));
     border-radius: 999px;
 }
 
 .ranking-receita {
-    margin: 0.3rem 0 0;
+    margin: 0.35rem 0 0;
     font-size: 0.8rem;
     color: var(--preco);
     font-variant-numeric: tabular-nums;
@@ -205,7 +317,6 @@
 
 /* ---------- Tabela ---------- */
 .tabela-rolagem {
-    margin-top: 1rem;
     overflow-x: auto;
 }
 
@@ -217,18 +328,22 @@
 
 .tabela th,
 .tabela td {
-    padding: 0.7rem 0.75rem;
+    padding: 0.75rem;
     text-align: left;
     white-space: nowrap;
     border-bottom: 1px solid var(--borda);
 }
 
 .tabela th {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--texto-suave);
+}
+
+.tabela tbody tr:last-child td {
+    border-bottom: 0;
 }
 
 .tabela .num {
@@ -240,7 +355,7 @@
     background: rgba(167, 139, 234, 0.08);
 }
 
-/* ---------- Responsivo ---------- */
+/* ---------- Tablet em pé e celular ---------- */
 @media (max-width: 52rem) {
     .admin {
         padding-block: 1.5rem 2.5rem;
@@ -251,7 +366,22 @@
     }
 }
 
+/* ---------- Celular ---------- */
 @media (max-width: 30rem) {
+    .admin-cabecalho {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filtro {
+        display: flex;
+    }
+
+    .filtro a {
+        flex: 1;
+        padding-inline: 0.4rem;
+    }
+
     .kpis {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.75rem;
@@ -261,79 +391,116 @@
         padding: 0.9rem;
     }
 
+    .kpi-principal {
+        grid-column: 1 / -1;
+    }
+
     .kpi-valor {
         font-size: 1.25rem;
-    }
-
-    .grafico {
-        height: 13rem;
-        gap: 0.3rem;
-    }
-
-    .coluna-valor {
-        font-size: 0.6rem;
     }
 
     .bloco-admin {
         padding: 1rem;
     }
 
-        /* ---------- Filtro de período ---------- */
-    .filtro {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.5rem;
+    .grafico,
+    .grafico-vazio {
+        height: 14rem;
     }
 
-    .filtro-rotulo {
-        margin-right: 0.25rem;
-        font-size: 0.85rem;
-        color: var(--texto-suave);
+    .grafico {
+        gap: 0.4rem;
     }
 
-    .filtro a {
-        padding: 0.45rem 0.9rem;
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--texto);
-        background: var(--superficie);
-        border: 1px solid var(--borda);
-        border-radius: 999px;
-        text-decoration: none;
-        transition: border-color 0.2s, background-color 0.2s;
+    .coluna-valor {
+        font-size: 0.62rem;
     }
+}
 
-    .filtro a:hover {
-        border-color: var(--destaque);
+@media (prefers-reduced-motion: reduce) {
+    .filtro a,
+    .coluna-barra {
+        transition: none;
     }
+}
 
-    .filtro a.ativo {
-        color: var(--topo);
-        background: var(--destaque);
-        border-color: var(--destaque);
-    }
+/* ---------- Links da tabela e página de detalhe da venda ---------- */
+.tabela a {
+    font-weight: 600;
+    color: var(--destaque-hover);
+    text-decoration: none;
+}
 
-    /* ---------- Gráfico com muitos dias (período de 30 dias) ---------- */
-    .grafico.denso {
-        gap: 0.2rem;
-    }
+.tabela a:hover {
+    color: var(--texto);
+    text-decoration: underline;
+}
 
-    .grafico.denso .coluna-valor {
-        display: none;
-    }
+.tabela .acao {
+    text-align: right;
+}
 
-    .coluna-dia.oculto {
-        visibility: hidden;
-    }
+.voltar-link {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--destaque-hover);
+    text-decoration: none;
+}
 
-    .coluna-dia {
-        white-space: nowrap;
-    }
+.voltar-link:hover {
+    color: var(--texto);
+}
 
-    @media (prefers-reduced-motion: reduce) {
-        .filtro a {
-            transition: none;
-        }
-    }
+.kpi-texto {
+    font-size: 1.1rem !important;
+    overflow-wrap: anywhere;
+}
+
+.tabela td.produto-celula {
+    white-space: normal;
+    min-width: 14rem;
+}
+
+.item-produto {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.mini-foto {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    padding: 0.2rem;
+    background: var(--foto-fundo);
+    border-radius: 0.4rem;
+}
+
+.mini-foto img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.tabela tfoot th,
+.tabela tfoot td {
+    padding-top: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-top: 2px solid var(--borda);
+    border-bottom: 0;
+}
+
+.tabela tfoot th {
+    text-align: right;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--texto);
+}
+
+.tabela tfoot td {
+    color: var(--preco);
 }

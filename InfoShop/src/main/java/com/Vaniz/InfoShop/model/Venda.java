@@ -31,6 +31,10 @@ public class Venda {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal total = BigDecimal.ZERO;
 
+    public int getQuantidadeTotal() {
+        return itens.stream().mapToInt(VendaProduto::getQuantidade).sum();
+    }
+
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<VendaProduto> itens = new ArrayList<>();
 }

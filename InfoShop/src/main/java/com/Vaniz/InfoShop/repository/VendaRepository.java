@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface VendaRepository extends JpaRepository<Venda, Long> {
 
@@ -37,4 +38,13 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
             order by v.dataVenda desc
             """)
     List<Venda> ultimas(@Param("desde") LocalDateTime desde, Pageable pageable);
+
+    @Query("""
+                select distinct v from Venda v
+                join fetch v.cliente
+                left join fetch v.itens i
+                left join fetch i.produto
+                where v.id = :id
+                """)
+        Optional<Venda> buscarDetalhe(@Param("id") Long id);
 }

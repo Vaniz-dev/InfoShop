@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/home.css}">
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css(v=3)}">
 </head>
 <body>
 
@@ -46,36 +46,36 @@
 
     <main class="largura admin">
 
-        <h1 class="admin-titulo">Painel do administrador</h1>
-        <p class="admin-sub">Exibindo: <strong th:text="${d.rotuloPeriodo}">Todas as vendas</strong></p>
-        <p class="admin-sub">Resumo das vendas da loja.</p>
+        <!-- Título + seletor de período -->
+        <header class="admin-cabecalho">
+            <div>
+                <h1 class="admin-titulo">Painel do administrador</h1>
+                <p class="admin-sub">
+                    Exibindo: <strong th:text="${d.rotuloPeriodo}">Todas as vendas</strong>
+                </p>
+            </div>
 
-        <nav class="filtro" aria-label="Período">
-            <span class="filtro-rotulo">Período:</span>
-            <a th:href="@{/admin/painel(periodo='todas')}"
-               th:classappend="${d.periodo == 'todas'} ? 'ativo'"
-               th:aria-current="${d.periodo == 'todas'} ? 'true'">Todas as vendas</a>
-            <a th:href="@{/admin/painel(periodo='30')}"
-               th:classappend="${d.periodo == '30'} ? 'ativo'"
-               th:aria-current="${d.periodo == '30'} ? 'true'">30 dias</a>
-            <a th:href="@{/admin/painel(periodo='7')}"
-               th:classappend="${d.periodo == '7'} ? 'ativo'"
-               th:aria-current="${d.periodo == '7'} ? 'true'">7 dias</a>
-            <a th:href="@{/admin/painel(periodo='3')}"
-               th:classappend="${d.periodo == '3'} ? 'ativo'"
-               th:aria-current="${d.periodo == '3'} ? 'true'">3 dias</a>
-        </nav>
-
-        <p class="aviso-vazio" th:if="${d.totalVendas == 0}">
-            Nenhuma venda em <strong th:text="${d.rotuloPeriodo}"></strong>.
-            Quando os clientes finalizarem compras, os números aparecem aqui.
-        </p>
+            <nav class="filtro" aria-label="Período das vendas">
+                <a th:href="@{/admin/painel(periodo='todas')}"
+                   th:classappend="${d.periodo == 'todas'} ? 'ativo'"
+                   th:aria-current="${d.periodo == 'todas'} ? 'true'">Todas</a>
+                <a th:href="@{/admin/painel(periodo='30')}"
+                   th:classappend="${d.periodo == '30'} ? 'ativo'"
+                   th:aria-current="${d.periodo == '30'} ? 'true'">30 dias</a>
+                <a th:href="@{/admin/painel(periodo='7')}"
+                   th:classappend="${d.periodo == '7'} ? 'ativo'"
+                   th:aria-current="${d.periodo == '7'} ? 'true'">7 dias</a>
+                <a th:href="@{/admin/painel(periodo='3')}"
+                   th:classappend="${d.periodo == '3'} ? 'ativo'"
+                   th:aria-current="${d.periodo == '3'} ? 'true'">3 dias</a>
+            </nav>
+        </header>
 
         <!-- Indicadores -->
         <section class="kpis" aria-label="Indicadores">
-            <article class="kpi">
-                <p class="kpi-rotulo">Faturamento total</p>
-                <p class="kpi-valor kpi-destaque">R$ <span th:text="${#numbers.formatDecimal(d.faturamento, 1, 'POINT', 2, 'COMMA')}"></span></p>
+            <article class="kpi kpi-principal">
+                <p class="kpi-rotulo">Faturamento</p>
+                <p class="kpi-valor">R$ <span th:text="${#numbers.formatDecimal(d.faturamento, 1, 'POINT', 2, 'COMMA')}"></span></p>
             </article>
             <article class="kpi">
                 <p class="kpi-rotulo">Vendas realizadas</p>
@@ -103,7 +103,11 @@
                     th:text="'Vendas dos últimos ' + ${#lists.size(d.dias)} + ' dias'">Vendas</h2>
                 <p class="bloco-admin-sub">Faturamento por dia, em R$</p>
 
-                <div class="grafico" role="list"
+                <div class="grafico-vazio" th:if="${d.totalVendas == 0}">
+                    Nenhuma venda neste período.
+                </div>
+
+                <div class="grafico" role="list" th:unless="${d.totalVendas == 0}"
                      th:classappend="${#lists.size(d.dias) > 10} ? 'denso'"
                      th:style="'grid-template-columns: repeat(' + ${#lists.size(d.dias)} + ', minmax(0, 1fr))'">
                     <div class="coluna" role="listitem" th:each="dia, st : ${d.dias}"
@@ -125,11 +129,12 @@
                 <h2 id="titulo-top">Produtos mais vendidos</h2>
                 <p class="bloco-admin-sub">Por quantidade de unidades</p>
 
-                <p class="vazio-admin" th:if="${#lists.isEmpty(d.maisVendidos)}">Sem vendas até agora.</p>
+                <p class="vazio-admin" th:if="${#lists.isEmpty(d.maisVendidos)}">Sem vendas neste período.</p>
 
                 <ol class="ranking" th:unless="${#lists.isEmpty(d.maisVendidos)}">
-                    <li th:each="p : ${d.maisVendidos}">
+                    <li th:each="p, st : ${d.maisVendidos}">
                         <div class="ranking-linha">
+                            <span class="ranking-posicao" th:text="${st.count}">1</span>
                             <span class="ranking-nome" th:text="${p.nome}">Produto</span>
                             <span class="ranking-qtd"><span th:text="${p.quantidade}">0</span> un.</span>
                         </div>
@@ -147,8 +152,9 @@
         <!-- Últimas vendas -->
         <section class="bloco-admin" aria-labelledby="titulo-ultimas">
             <h2 id="titulo-ultimas">Últimas vendas</h2>
+            <p class="bloco-admin-sub">As 8 mais recentes do período</p>
 
-            <p class="vazio-admin" th:if="${#lists.isEmpty(d.ultimas)}">Nenhuma venda registrada.</p>
+            <p class="vazio-admin" th:if="${#lists.isEmpty(d.ultimas)}">Nenhuma venda registrada neste período.</p>
 
             <div class="tabela-rolagem" th:unless="${#lists.isEmpty(d.ultimas)}">
                 <table class="tabela">
@@ -160,14 +166,15 @@
                             <th scope="col" class="num">Total</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr th:each="v : ${d.ultimas}">
-                            <td th:text="'#' + ${v.id}">#1</td>
-                            <td th:text="${v.cliente.nome}">Cliente</td>
-                            <td th:text="${#temporals.format(v.dataVenda, 'dd/MM/yyyy HH:mm')}">01/01/2026 10:00</td>
-                            <td class="num">R$ <span th:text="${#numbers.formatDecimal(v.total, 1, 'POINT', 2, 'COMMA')}"></span></td>
-                        </tr>
-                    </tbody>
+                <tbody>
+                    <tr th:each="v : ${d.ultimas}">
+                        <td><a th:href="@{/admin/vendas/{id}(id=${v.id})}" th:text="'#' + ${v.id}">#1</a></td>
+                        <td th:text="${v.cliente.nome}">Cliente</td>
+                        <td th:text="${#temporals.format(v.dataVenda, 'dd/MM/yyyy HH:mm')}">01/01/2026 10:00</td>
+                        <td class="num">R$ <span th:text="${#numbers.formatDecimal(v.total, 1, 'POINT', 2, 'COMMA')}"></span></td>
+                        <td class="acao"><a th:href="@{/admin/vendas/{id}(id=${v.id})}">Ver itens →</a></td>
+                    </tr>
+                </tbody>
                 </table>
             </div>
         </section>
