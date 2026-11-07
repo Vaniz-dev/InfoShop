@@ -159,7 +159,6 @@ Use esse login para entrar como **ADMIN**. Para testar como usuário comum, cada
 | `/home` | autenticado | Página inicial (mostra nome do usuário e se é admin) |
 | `/admin/painel` | perfil ADMIN | Painel administrativo |
 
-> **Nota:** o `AdminController` retorna a view `admin/painel`, mas o arquivo em `templates/admin/` se chama `panel.html`. Vale confirmar/corrigir esse nome (view ou arquivo) para o painel funcionar sem erro de template não encontrado.
 
 ## 📌 Observações
 
